@@ -1,6 +1,20 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.includes(:category).all
+    if params[:sort_by]
+      case params[:sort_by]
+      when 'alphabetical'
+        @products = Product.includes(:category).order(:name).page(params[:page])
+      when 'price'
+        @products = Product.includes(:category).order(:price).page(params[:page])
+      when 'stock'
+        @products = Product.includes(:category).order(:stock_quantity).page(params[:page])
+      else
+        # Default to random order
+        @products = Product.includes(:category).order("RANDOM()").page(params[:page])
+      end
+    else
+      @products = Product.includes(:category).order("RANDOM()").page(params[:page])
+    end
   end
 
   def show

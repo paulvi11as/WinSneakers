@@ -9,26 +9,50 @@
 
 <div class="container mt-4">
   <h1>All Sneakers</h1>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <% @products.each do |product| %>
-      <div class="col">
-        <div class="card shadow-sm">
-          <!-- Display the first product image -->
-          <% if product.product_images.any? %>
-            <%= image_tag product.product_images.first.image_url, class: "bd-placeholder-img card-img-top", alt: product.name, width: "100%", height: "225px" %>
-          <% else %>
-            <%= image_tag "https://via.placeholder.com/225x225.png?text=No+Image", class: "bd-placeholder-img card-img-top", alt: product.name, width: "100%", height: "225px" %>
-          <% end %>
 
-          <div class="card-body">
-            <h5 class="card-title"><%= product.name %></h5>
-            <p class="card-text"><%= truncate(product.description, length: 100) %></p>
-            <p class="card-text text-muted"><strong>Price:</strong> $<%= product.price %></p>
-            <p class="card-text text-muted"><strong>Stock:</strong> <%= product.stock_quantity %></p>
-            <%= link_to "View Details", product_path(product), class: "btn btn-primary" %>
-          </div>
-        </div>
+  <!-- Dropdown filter for sorting -->
+  <div class="row">
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label for="sort_by" class="form-label">Sort By:</label>
+        <%= form_with(url: products_path, method: :get, local: true, class: "form-inline") do |form| %>
+          <%= form.select :sort_by, options_for_select([
+            ['Alphabetical', 'alphabetical'],
+            ['Price (Low to High)', 'price'],
+            ['Stock Quantity', 'stock']
+          ], selected: params[:sort_by]), { class: 'form-control' }, { onchange: 'this.form.submit();' } %>
+        <% end %>
       </div>
-    <% end %>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="col-md-9">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <% @products.each do |product| %>
+          <div class="col">
+            <div class="card shadow-sm">
+              <% if product.product_images.any? %>
+                <%= image_tag product.product_images.first.image_url, class: "bd-placeholder-img card-img-top", alt: product.name, width: "100%", height: "225px" %>
+              <% else %>
+                <%= image_tag "https://via.placeholder.com/225x225.png?text=No+Image", class: "bd-placeholder-img card-img-top", alt: product.name, width: "100%", height: "225px" %>
+              <% end %>
+
+              <div class="card-body">
+                <h5 class="card-title"><%= product.name %></h5>
+                <p class="card-text"><%= truncate(product.description, length: 100) %></p>
+                <p class="card-text text-muted"><strong>Price:</strong> $<%= product.price %></p>
+                <p class="card-text text-muted"><strong>Stock:</strong> <%= product.stock_quantity %></p>
+                <%= link_to "View Details", product_path(product), class: "btn btn-primary" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Pagination Navigation -->
+      <div class="d-flex justify-content-center mt-4">
+        <%= paginate @products %>
+      </div>
+    </div>
   </div>
 </div>

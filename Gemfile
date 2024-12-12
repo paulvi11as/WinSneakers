@@ -22,6 +22,7 @@ gem "jbuilder"
 gem "activeadmin"
 gem "devise"
 gem "sassc-rails"
+gem 'kaminari'
 
 gem 'bcrypt', '~> 3.1.7'
 
