@@ -1,0 +1,38 @@
+<h1>Search Products</h1>
+
+<div class="mb-4">
+  <%= form_with url: search_path, method: :get, local: true, class: "row g-3" do |f| %>
+    <div class="col-md-6">
+      <%= f.text_field :query, placeholder: "Search by keyword...", value: params[:query], class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.select :category, options_from_collection_for_select(@categories, :id, :name, params[:category]), { prompt: "All Categories" }, class: "form-select" %>
+    </div>
+    <div class="col-md-2">
+      <%= f.submit "Search", class: "btn btn-primary w-100" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  <% @products.each do |product| %>
+    <div class="col">
+      <div class="card h-100">
+        <% if product.product_images.any? %>
+          <%= image_tag product.product_images.first.image_url, class: "card-img-top", alt: product.name %>
+        <% else %>
+          <%= image_tag "https://via.placeholder.com/500x500.png?text=No+Image", class: "card-img-top", alt: "No Image Available" %>
+        <% end %>
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to product.name, product_path(product) %></h5>
+          <p class="card-text"><%= truncate(product.description, length: 100) %></p>
+          <p class="card-text"><strong>Price:</strong> $<%= product.price %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+  <%= paginate @products %>
+</div>
