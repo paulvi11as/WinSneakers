@@ -44,6 +44,29 @@
           <% end %>
           <%
 =end%>
+          <ul class="navbar-nav me-auto">
+            <% if user_signed_in? %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= current_user.username || current_user.email %>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <%= form_with url: destroy_user_session_path, method: :delete, class: "d-inline" do %>
+                      <%= submit_tag "Logout", class: "dropdown-item btn btn-link p-0 text-start" %>
+                    <% end %>
+                  </li>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "Login", new_user_session_path, class: "nav-link", style: "text-decoration: none;" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Sign Up", new_user_registration_path, class: "nav-link", style: "text-decoration: none;" %>
+              </li>
+            <% end %>
+          </ul>
         </div>
       </div>
     </nav>
