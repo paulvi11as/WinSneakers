@@ -10,21 +10,35 @@
 
 require_relative '../app/services/sneaker_api_service'
 
-puts "Fetching sneakers for Yeezys..."
-sneakers_data = SneakerApiService.fetch_sneakers("yeezy", "yeezy", 40) # Fetch 40 sneakers per query
+# Fetch sneakers for popular queries
+queries = ["Adidas", "Nike", "Puma", "Converse", "Jordan"]
 
-sneakers_data.each do |sneaker|
-  begin
-    Product.create!(
-      name: sneaker["shoeName"], # Adjust key to match actual response
-      description: sneaker["description"] || "No description available",
-      price: sneaker["price"].to_f, # Ensure price is a float
-      stock_quantity: rand(10..50), # Random stock quantity
-      image_url: sneaker["thumbnail"] # Replace key with actual image URL
-    )
-    puts "Seeded: #{sneaker['name']}"
-  rescue StandardError => e
-    puts "Failed to save sneaker #{sneaker['name']}: #{e.message}"
+queries.each do |brand_query|
+  puts "Fetching sneakers for #{brand_query}..."
+  sneakers_data = SneakerApiService.fetch_sneakers(brand_query)
+
+  # Navigate to results array within the API response
+  results = sneakers_data.dig("data", "results") || []
+
+  results.each do |sneaker|
+    begin
+      # Find or create the category based on the product_category field
+      category_name = sneaker["productCategory"].capitalize rescue "Unknown"
+      category = Category.find_or_create_by!(name: category_name)
+
+      # Create the product associated with the category
+      Product.create!(
+        name: sneaker["title"],
+        description: sneaker["description"] || "No description available",
+        price: rand(50..300), # Generate a random price
+        stock_quantity: rand(10..100), # Generate a random stock quantity
+        category: category
+      )
+
+      puts "Seeded: #{sneaker['title']} in category #{category.name}"
+    rescue StandardError => e
+      puts "Failed to save sneaker #{sneaker['title']}: #{e.message}"
+    end
   end
 end
 

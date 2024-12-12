@@ -6,8 +6,8 @@ class SneakerApiService
   API_HOST = 'sneaker-database-stockx.p.rapidapi.com'
   API_KEY = 'f66e869089mshecc767dd4dec2cbp12890cjsn703bfe325b6f'
 
-  def self.fetch_sneakers(query, market, limit = 50)
-    url = URI("https://#{API_HOST}/stockx/sneakers?query=#{query}&market=#{market}&limit=#{limit}")
+  def self.fetch_sneakers(query)
+    url = URI("https://#{API_HOST}/stockx/sneakers?query=#{query}")
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
 

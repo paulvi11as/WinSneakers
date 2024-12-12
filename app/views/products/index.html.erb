@@ -6,3 +6,22 @@
     </div>
   </div>
 </section>
+
+<div class="container mt-4">
+  <h1>All Sneakers</h1>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <% @products.each do |product| %>
+      <div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title"><%= product.name %></h5>
+            <p class="card-text"><%= truncate(product.description, length: 100) %></p>
+            <p class="card-text text-muted"><strong>Price:</strong> $<%= product.price %></p>
+            <p class="card-text text-muted"><strong>Stock:</strong> <%= product.stock_quantity %></p>
+            <%= link_to "View Details", product_path(product), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
