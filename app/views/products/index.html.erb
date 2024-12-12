@@ -2,7 +2,7 @@
   <div class="row py-lg-5">
     <div class="col-lg-6 col-md-8 mx-auto">
       <h1 class="fw-light">Products</h1>
-      <p class="lead text-body-secondary">Explore famous comic teams and alliances that have fought for justice—or chaos—throughout the ages. Uncover the bonds and conflicts that define these groups and discover the dynamic characters within them.</p>
+      <p class="lead text-body-secondary">Discover our exclusive collection of sneakers, featuring the latest designs from top brands like Adidas, Nike, Puma, and more. Whether you're looking for performance footwear or stylish everyday wear, we offer something for every sneaker enthusiast. Shop now and step up your game!</p>
     </div>
   </div>
 </section>
@@ -42,7 +42,7 @@
                 <p class="card-text"><%= truncate(product.description, length: 100) %></p>
                 <p class="card-text text-muted"><strong>Price:</strong> $<%= product.price %></p>
                 <p class="card-text text-muted"><strong>Stock:</strong> <%= product.stock_quantity %></p>
-                <%= link_to "View Details", product_path(product), class: "btn btn-primary" %>
+                <%= link_to "View Details", product_path(product), class: "btn btn-outline-primary" %>
               </div>
             </div>
           </div>

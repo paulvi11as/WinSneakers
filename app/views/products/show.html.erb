@@ -16,7 +16,7 @@
       <p><strong>Description:</strong> <%= @product.description.presence || "No description available." %></p>
       <p><strong>Price:</strong> $<%= number_with_precision(@product.price, precision: 2) %></p>
       <p><strong>Stock:</strong> <%= @product.stock_quantity > 0 ? @product.stock_quantity : "Out of stock" %></p>
-      <%= link_to "Back to All Products", products_path, class: "btn btn-secondary mt-3" %>
+      <%= link_to "Back to All Products", products_path, class: "btn btn-outline-primary" %>
     </div>
   </div>
 </div>

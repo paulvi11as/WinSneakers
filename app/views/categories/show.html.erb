@@ -17,7 +17,7 @@
             <p class="card-text"><%= truncate(product.description, length: 100) %></p>
             <p class="card-text text-muted"><strong>Price:</strong> $<%= product.price %></p>
             <p class="card-text text-muted"><strong>Stock:</strong> <%= product.stock_quantity %></p>
-            <%= link_to "View Details", product_path(product), class: "btn btn-primary" %>
+            <%= link_to "View Details", product_path(product), class: "btn btn-outline-primary" %>
           </div>
         </div>
       </div>
