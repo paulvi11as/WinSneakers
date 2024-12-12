@@ -14,5 +14,13 @@ ActiveAdmin.register Product do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
-  
+  permit_params :name, :description, :price, :stock_quantity, :category_id
+
+  # Customize Filters
+  filter :name
+  filter :description
+  filter :price
+  filter :stock_quantity
+  filter :category, as: :select, collection: Category.all
+
 end
