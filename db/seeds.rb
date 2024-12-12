@@ -21,13 +21,16 @@ queries.each do |brand_query|
   results = sneakers_data.dig("data", "results") || []
 
   results.each do |sneaker|
+    # Skip entries with null or blank names
+    next if sneaker["name"].blank?
+
     begin
-      # Find or create the category based on the product_category field
-      category_name = sneaker["productCategory"].capitalize rescue "Unknown"
+      # Use the 'model' field to create or find the category
+      category_name = sneaker["model"] || "Unknown"
       category = Category.find_or_create_by!(name: category_name)
 
-      # Create the product associated with the category
-      Product.create!(
+      # Create the product
+      product = Product.create!(
         name: sneaker["title"],
         description: sneaker["description"] || "No description available",
         price: rand(50..300), # Generate a random price
@@ -35,7 +38,16 @@ queries.each do |brand_query|
         category: category
       )
 
-      puts "Seeded: #{sneaker['title']} in category #{category.name}"
+      # Add images to the product
+      image_urls = [sneaker.dig("media", "smallImageUrl"), sneaker.dig("media", "thumbUrl")].compact
+      image_urls.each do |image_url|
+        ProductImage.create!(
+          product: product,
+          image_url: image_url
+        )
+      end
+
+      puts "Seeded: #{sneaker['title']} with #{image_urls.size} images"
     rescue StandardError => e
       puts "Failed to save sneaker #{sneaker['title']}: #{e.message}"
     end

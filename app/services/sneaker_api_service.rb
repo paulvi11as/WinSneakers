@@ -16,11 +16,15 @@ class SneakerApiService
     request["x-rapidapi-host"] = API_HOST
 
     response = http.request(request)
+    data = JSON.parse(response.body)
 
-    # Print the raw response for debugging
-    puts "Raw Response: #{response.body}"
+    # Filter out entries with null or blank names
+    filtered_results = (data.dig("data", "results") || []).reject { |sneaker| sneaker["name"].blank? }
 
-    # Parse the JSON response
-    JSON.parse(response.body)
+    puts "Filtered Results Count: #{filtered_results.size}"
+    { "data" => { "results" => filtered_results } }
+  rescue StandardError => e
+    puts "Error fetching sneakers: #{e.message}"
+    { "data" => { "results" => [] } }
   end
 end
