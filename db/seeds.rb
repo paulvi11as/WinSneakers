@@ -28,5 +28,6 @@ sneakers_data.each do |sneaker|
   end
 end
 
+puts "All sneakers seeded successfully!"
 
-puts "All sneakers seeded successfully!"AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
